@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#183c32">
+<title>My Space | Personal Organizer</title>
+<style>
+:root{--green:#183c32;--green2:#2d6a50;--mint:#e8f1e9;--bg:#f5f6f3;--card:#fff;--ink:#202923;--muted:#6e7870;--line:#e3e8e2;--gold:#d6b56d;--red:#b64c45;--radius:18px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px;line-height:1.45}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{max-width:1120px;margin:auto;min-height:100vh;display:grid;grid-template-columns:230px minmax(0,1fr)}
+.sidebar{background:var(--green);color:white;padding:26px 16px;display:flex;flex-direction:column;gap:24px}
+.brand{display:flex;gap:10px;align-items:center;padding:0 10px}.logo{width:38px;height:38px;border-radius:13px;background:#dbe9d9;color:var(--green);display:grid;place-items:center;font-weight:900;font-size:20px}.brand strong{display:block;font-size:17px}.brand small{color:#c4d5c8}
+.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:#dbe7df;text-align:left;padding:12px 13px;border-radius:12px;display:flex;gap:12px;align-items:center}.nav button.active,.nav button:hover{background:#315747;color:#fff}.nav .ico{width:22px;text-align:center;font-size:18px}
+.side-note{margin-top:auto;padding:14px;background:#264a3b;border-radius:14px;color:#e0ebe2;font-size:13px}.side-note b{display:block;margin-bottom:5px}
+main{padding:28px clamp(16px,4vw,42px) 100px;min-width:0}.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:25px}.eyebrow{font-size:12px;letter-spacing:.09em;color:var(--green2);font-weight:800;text-transform:uppercase}.topbar h1{font-size:clamp(25px,4vw,34px);margin:3px 0 0;letter-spacing:-.04em}.today{color:var(--muted);font-size:13px;text-align:right}
+.page{display:none}.page.active{display:block}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;min-width:0;box-shadow:0 2px 8px #17291a05}.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-7{grid-column:span 7}.span-6{grid-column:span 6}.span-5{grid-column:span 5}.span-4{grid-column:span 4}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}.card h2{font-size:16px;margin:0}.muted{color:var(--muted)}.tiny{font-size:12px;color:var(--muted)}.metric{font-size:28px;font-weight:800;letter-spacing:-.04em;margin:9px 0 3px}.metric-sub{font-size:12px;color:var(--muted)}.metric-icon{width:39px;height:39px;background:var(--mint);color:var(--green2);border-radius:13px;display:grid;place-items:center;font-size:19px}
+.progress{height:8px;background:#e9ede8;border-radius:99px;overflow:hidden;margin:12px 0 7px}.progress span{height:100%;display:block;background:var(--green2);border-radius:99px;transition:width .2s}
+.btn{border:0;background:var(--green);color:white;padding:10px 14px;border-radius:11px;font-weight:700}.btn:hover{background:#275642}.btn.secondary{background:#edf2ed;color:var(--green)}.btn.ghost{background:transparent;color:var(--green2);padding:7px 9px}.btn.danger{background:#f9e9e7;color:var(--red)}.btn.small{padding:7px 10px;font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}
+.field{display:grid;gap:6px;margin-bottom:12px}.field label{font-size:12px;font-weight:750;color:#536057}.field input,.field textarea,.field select,.search{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);outline:none}.field input:focus,.field textarea:focus,.field select:focus,.search:focus{border-color:#6c9c7a;box-shadow:0 0 0 3px #6c9c7a20}.field textarea{resize:vertical;min-height:90px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.list{display:grid;gap:9px}.item{border:1px solid var(--line);border-radius:13px;padding:12px;display:flex;align-items:flex-start;gap:10px}.item-main{flex:1;min-width:0}.item-title{font-weight:700;overflow-wrap:anywhere}.item-meta{font-size:12px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}.item-actions{display:flex;gap:4px;flex-wrap:wrap}.check{accent-color:var(--green2);width:18px;height:18px;margin-top:3px}.done .item-title{text-decoration:line-through;color:#879188}.tag{display:inline-flex;align-items:center;background:var(--mint);color:var(--green2);font-size:11px;font-weight:750;padding:4px 8px;border-radius:99px}.empty{padding:26px 10px;text-align:center;color:var(--muted);font-size:13px}.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.quick button{border:1px solid var(--line);background:#fff;border-radius:13px;padding:14px 8px;text-align:center;color:var(--green);font-weight:700}.quick button span{display:block;font-size:21px;margin-bottom:5px}
+.mobile-nav{display:none}
+.note-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.note{padding:14px;border-radius:14px;border:1px solid var(--line);background:#fff;min-height:130px}.note h3{font-size:14px;margin:0 0 8px;overflow-wrap:anywhere}.note p{font-size:13px;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 12px;max-height:110px;overflow:hidden}.note-foot{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:11px;color:var(--muted)}
+.chart{display:flex;align-items:end;gap:8px;height:130px;padding-top:12px}.bar-wrap{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:6px;min-width:0}.bar{width:min(100%,28px);min-height:3px;border-radius:7px 7px 3px 3px;background:#6c9c7a}.bar-label{font-size:10px;color:var(--muted)}.bar-val{font-size:10px;color:var(--green2)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#203b2d;color:#fff;padding:11px 16px;border-radius:12px;box-shadow:0 6px 24px #0002;display:none;z-index:10;font-size:13px;max-width:90vw}
+@media(max-width:760px){.app{display:block}.sidebar{display:none}main{padding:20px 15px 95px}.topbar{margin-bottom:19px}.today{font-size:11px}.grid{gap:11px}.span-8,.span-7,.span-6,.span-5,.span-4{grid-column:span 12}.span-mobile-6{grid-column:span 6}.card{padding:16px;border-radius:16px}.metric{font-size:25px}.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:5;display:grid;grid-template-columns:repeat(5,1fr);background:#fffffff2;backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:7px 4px calc(7px + env(safe-area-inset-bottom))}.mobile-nav button{border:0;background:transparent;color:#7b857d;font-size:10px;padding:4px 0;display:grid;justify-items:center;gap:3px}.mobile-nav button span{font-size:19px}.mobile-nav button.active{color:var(--green2);font-weight:800}.form-row{grid-template-columns:1fr}.quick{grid-template-columns:repeat(3,1fr)}.quick button{font-size:12px;padding:11px 5px}.note-grid{grid-template-columns:1fr 1fr}.note{padding:11px;min-height:125px}.item-actions .btn{padding:6px 7px;font-size:11px}}
+@media(max-width:380px){.note-grid{grid-template-columns:1fr}.metric{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">M</div><div><strong>My Space</strong><small>Personal Organizer</small></div></div>
+  <nav class="nav" id="sideNav">
+    <button class="active" data-page="home"><span class="ico">⌂</span>ホーム</button>
+    <button data-page="tasks"><span class="ico">☑</span>タスク</button>
+    <button data-page="study"><span class="ico">◷</span>学習記録</button>
+    <button data-page="planner"><span class="ico">▦</span>予定</button>
+    <button data-page="notes"><span class="ico">▤</span>メモ・ノート</button>
+  </nav>
+  <div class="side-note"><b>小さく始めて、続ける。</b>学習・タスク・予定・アイデアを、ひとつの場所に。</div>
+</aside>
+<main>
+  <header class="topbar"><div><div class="eyebrow">YOUR PERSONAL SPACE</div><h1 id="pageTitle">おかえりなさい。</h1></div><div class="today" id="todayLabel"></div></header>
+
+  <section class="page active" id="page-home">
+    <div class="grid">
+      <div class="card span-4 span-mobile-6"><div class="card-head"><h2>今日の学習時間</h2><div class="metric-icon">◷</div></div><div class="metric" id="todayStudy">0分</div><div class="metric-sub">今日記録した合計時間</div></div>
+      <div class="card span-4 span-mobile-6"><div class="card-head"><h2>未完了タスク</h2><div class="metric-icon">✓</div></div><div class="metric" id="openTasks">0件</div><div class="metric-sub">これから取り組むこと</div></div>
+      <div class="card span-4 span-mobile-6"><div class="card-head"><h2>今週の学習時間</h2><div class="metric-icon">↗</div></div><div class="metric" id="weekStudy">0分</div><div class="metric-sub">月曜日から今日まで</div></div>
+      <div class="card span-7"><div class="card-head"><h2>週間の学習状況</h2><span class="tag">今週</span></div><div class="chart" id="weekChart"></div><div class="tiny">記録した学習時間を日ごとに表示します。</div></div>
+      <div class="card span-5"><div class="card-head"><h2>今週の目標</h2><button class="btn ghost small" data-page="study">設定</button></div><div class="metric" id="goalSummary">0%</div><div class="progress"><span id="goalBar" style="width:0%"></span></div><div class="metric-sub" id="goalText">0分 / 600分</div><div style="height:17px"></div><div class="card-head"><h2>すばやく追加</h2></div><div class="quick"><button data-action="task"><span>＋</span>タスク</button><button data-action="study"><span>◷</span>学習</button><button data-action="note"><span>▤</span>メモ</button></div></div>
+      <div class="card span-12"><div class="card-head"><h2>今日やること</h2><button class="btn ghost small" data-page="tasks">すべて見る →</button></div><div id="homeTasks" class="list"></div></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-tasks">
+    <div class="grid">
+      <div class="card span-5"><div class="card-head"><h2 id="taskFormTitle">タスクを追加</h2><span class="tag">TO-DO</span></div>
+        <form id="taskForm"><input type="hidden" id="taskId"><div class="field"><label for="taskTitle">タスク名 *</label><input id="taskTitle" required maxlength="120" placeholder="例：スペイン語の復習"></div>
+        <div class="form-row"><div class="field"><label for="taskDue">期限</label><input id="taskDue" type="date"></div><div class="field"><label for="taskPriority">優先度</label><select id="taskPriority"><option>普通</option><option>高</option><option>低</option></select></div></div>
+        <div class="field"><label for="taskCategory">カテゴリー</label><select id="taskCategory"><option>大学</option><option>語学</option><option>部活</option><option>バイト</option><option>個人</option></select></div><div class="actions"><button class="btn" type="submit">保存する</button><button class="btn secondary" type="button" id="taskCancel" hidden>キャンセル</button></div></form>
+      </div>
+      <div class="card span-7"><div class="card-head"><h2>タスク一覧</h2><span class="tag" id="taskCount">0件</span></div><input class="search" id="taskSearch" placeholder="タスクを検索…"><div style="height:12px"></div><div class="list" id="taskList"></div></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-study">
+    <div class="grid">
+      <div class="card span-5"><div class="card-head"><h2 id="studyFormTitle">学習を記録</h2><span class="tag">STUDY LOG</span></div>
+        <form id="studyForm"><input type="hidden" id="studyId"><div class="field"><label for="studySubject">科目 *</label><select id="studySubject"><option>英語</option><option>スペイン語</option><option>大学の授業</option><option>資格・就活</option><option>その他</option></select></div>
+        <div class="form-row"><div class="field"><label for="studyDate">日付 *</label><input id="studyDate" type="date" required></div><div class="field"><label for="studyMinutes">時間（分） *</label><input id="studyMinutes" type="number" min="1" max="1440" required placeholder="30"></div></div>
+        <div class="field"><label for="studyMemo">学習内容・メモ</label><textarea id="studyMemo" maxlength="1000" placeholder="例：過去形の文法を復習"></textarea></div><div class="actions"><button class="btn" type="submit">記録を保存</button><button class="btn secondary" type="button" id="studyCancel" hidden>キャンセル</button></div></form>
+      </div>
+      <div class="card span-7"><div class="card-head"><h2>目標と実績</h2><span class="tag">WEEKLY GOAL</span></div><div class="field"><label for="weeklyGoal">1週間の学習目標（分）</label><input id="weeklyGoal" type="number" min="1" max="100000" value="600"></div><div class="metric" id="studyGoalPct">0%</div><div class="progress"><span id="studyGoalBar" style="width:0%"></span></div><div class="metric-sub" id="studyGoalDetail"></div><div style="height:20px"></div><div class="card-head"><h2>科目別の累計</h2></div><div id="subjectStats" class="list"></div></div>
+      <div class="card span-12"><div class="card-head"><h2>学習履歴</h2><span class="tag" id="studyCount">0件</span></div><div class="list" id="studyList"></div></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-planner">
+    <div class="grid">
+      <div class="card span-5"><div class="card-head"><h2 id="eventFormTitle">予定を追加</h2><span class="tag">PLANNER</span></div><form id="eventForm"><input type="hidden" id="eventId"><div class="field"><label for="eventTitle">予定名 *</label><input id="eventTitle" required maxlength="120" placeholder="例：バレーボール部"></div><div class="form-row"><div class="field"><label for="eventDate">日付 *</label><input id="eventDate" type="date" required></div><div class="field"><label for="eventTime">時刻（任意）</label><input id="eventTime" type="time"></div></div><div class="field"><label for="eventMemo">メモ</label><textarea id="eventMemo" maxlength="1000" placeholder="場所、持ち物など"></textarea></div><div class="actions"><button class="btn" type="submit">予定を保存</button><button class="btn secondary" type="button" id="eventCancel" hidden>キャンセル</button></div></form></div>
+      <div class="card span-7"><div class="card-head"><h2>予定一覧</h2><span class="tag" id="eventCount">0件</span></div><div class="field"><label for="eventFilter">表示する日付</label><select id="eventFilter"><option value="upcoming">今日以降の予定</option><option value="all">すべての予定</option><option value="today">今日の予定</option></select></div><div class="list" id="eventList"></div></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-notes">
+    <div class="grid">
+      <div class="card span-5"><div class="card-head"><h2 id="noteFormTitle">メモを作成</h2><span class="tag">NOTES</span></div><form id="noteForm"><input type="hidden" id="noteId"><div class="field"><label for="noteTitle">タイトル *</label><input id="noteTitle" required maxlength="120" placeholder="例：スペイン留学のアイデア"></div><div class="field"><label for="noteCategory">カテゴリー</label><select id="noteCategory"><option>アイデア</option><option>大学</option><option>語学</option><option>旅行</option><option>個人</option></select></div><div class="field"><label for="noteBody">本文</label><textarea id="noteBody" maxlength="10000" style="min-height:170px" placeholder="思いついたことを自由に書こう…"></textarea></div><div class="actions"><button class="btn" type="submit">メモを保存</button><button class="btn secondary" type="button" id="noteCancel" hidden>キャンセル</button></div></form></div>
+      <div class="card span-7"><div class="card-head"><h2>保存したメモ</h2><span class="tag" id="noteCount">0件</span></div><input class="search" id="noteSearch" placeholder="タイトルや本文を検索…"><div style="height:12px"></div><div class="note-grid" id="noteList"></div></div>
+    </div>
+  </section>
+  <footer class="tiny" style="margin-top:25px">My Space · 個人用オーガナイザー · データはこのブラウザ内に保存されます。</footer>
+</main>
+</div>
+<nav class="mobile-nav" id="mobileNav">
+  <button class="active" data-page="home"><span>⌂</span>ホーム</button><button data-page="tasks"><span>☑</span>タスク</button><button data-page="study"><span>◷</span>学習</button><button data-page="planner"><span>▦</span>予定</button><button data-page="notes"><span>▤</span>メモ</button>
+</nav>
+<div class="toast" id="toast" role="status"></div>
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const today = new Date();
+const dateKey = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const todayKey = dateKey(today);
+const dateLabel = s => {if(!s)return '';const d=new Date(s+'T12:00:00');return `${d.getMonth()+1}/${d.getDate()}`};
+const safe = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => n>=60?`${Math.floor(n/60)}時間${n%60?`${n%60}分`:''}`:`${n}分`;
+const load = (key, fallback) => {try{const x=JSON.parse(localStorage.getItem('myspace_'+key));return x??fallback}catch{return fallback}};
+let tasks=load('tasks',[]), studies=load('studies',[]), events=load('events',[]), notes=load('notes',[]), goal=Number(load('goal',600))||600;
+const save = () => {try{localStorage.setItem('myspace_tasks',JSON.stringify(tasks));localStorage.setItem('myspace_studies',JSON.stringify(studies));localStorage.setItem('myspace_events',JSON.stringify(events));localStorage.setItem('myspace_notes',JSON.stringify(notes));localStorage.setItem('myspace_goal',JSON.stringify(goal));}catch(e){toast('保存できませんでした。ブラウザの設定を確認してください。')}};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+function toast(msg){const el=$('toast');el.textContent=msg;el.style.display='block';clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.style.display='none',2200)}
+function empty(msg){return `<div class="empty">${safe(msg)}</div>`}
+function weekStart(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-(d.getDay()+6)%7);return d}
+function inWeek(s){const d=new Date(s+'T12:00:00'),start=weekStart(),end=new Date(start);end.setDate(end.getDate()+7);return d>=start&&d<end}
+function studyTotal(list){return list.reduce((s,x)=>s+(Number(x.minutes)||0),0)}
+function renderHome(){
+ const todayList=studies.filter(s=>s.date===todayKey),weekList=studies.filter(s=>inWeek(s.date)),todayMin=studyTotal(todayList),weekMin=studyTotal(weekList),open=tasks.filter(t=>!t.done).length;
+ $('todayStudy').textContent=fmt(todayMin);$('openTasks').textContent=`${open}件`;$('weekStudy').textContent=fmt(weekMin);
+ const pct=Math.min(100,Math.round(weekMin/goal*100));$('goalSummary').textContent=pct+'%';$('goalBar').style.width=pct+'%';$('goalText').textContent=`${weekMin}分 / ${goal}分`;
+ const start=weekStart(),days=[];for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);days.push(d)}
+ const daily=days.map(d=>({d,mins:studyTotal(studies.filter(s=>s.date===dateKey(d)))})),max=Math.max(60,...daily.map(x=>x.mins));
+ $('weekChart').innerHTML=daily.map(x=>`<div class="bar-wrap"><div class="bar-val">${x.mins||''}</div><div class="bar" style="height:${Math.max(3,x.mins/max*78)}px" title="${x.mins}分"></div><div class="bar-label">${'日月火水木金土'[x.d.getDay()]}</div></div>`).join('');
+ const list=tasks.filter(t=>!t.done).sort((a,b)=>(a.due||'9999').localeCompare(b.due||'9999')).slice(0,5);
+ $('homeTasks').innerHTML=list.length?list.map(t=>taskHTML(t,true)).join(''):empty('未完了のタスクはありません。いい調子です！');
+}
+function taskHTML(t,short=false){return `<div class="item ${t.done?'done':''}"><input class="check" type="checkbox" data-check-task="${t.id}" ${t.done?'checked':''} aria-label="完了"><div class="item-main"><div class="item-title">${safe(t.title)}</div><div class="item-meta">${safe(t.category)} · ${t.due?'期限 '+dateLabel(t.due):'期限なし'} · 優先度：${safe(t.priority)}</div></div>${short?'':`<div class="item-actions"><button class="btn secondary small" data-edit-task="${t.id}">編集</button><button class="btn danger small" data-delete-task="${t.id}">削除</button></div>`}</div>`}
+function renderTasks(){const q=$('taskSearch').value.trim().toLowerCase(),arr=tasks.filter(t=>t.title.toLowerCase().includes(q)||t.category.toLowerCase().includes(q)).sort((a,b)=>Number(a.done)-Number(b.done)||(a.due||'9999').localeCompare(b.due||'9999'));$('taskCount').textContent=`${tasks.length}件`;$('taskList').innerHTML=arr.length?arr.map(t=>taskHTML(t)).join(''):empty('タスクがありません。左のフォームから追加できます。');renderHome()}
+function renderStudy(){const week=studies.filter(s=>inWeek(s.date)),sum=studyTotal(week),pct=Math.min(100,Math.round(sum/goal*100));$('weeklyGoal').value=goal;$('studyGoalPct').textContent=pct+'%';$('studyGoalBar').style.width=pct+'%';$('studyGoalDetail').textContent=`今週 ${sum}分 / 目標 ${goal}分（残り ${Math.max(0,goal-sum)}分）`;
+ const subjects=[...new Set(['英語','スペイン語','大学の授業','資格・就活','その他',...studies.map(s=>s.subject)])];const stats=subjects.map(sub=>({sub,total:studyTotal(studies.filter(s=>s.subject===sub))})).filter(x=>x.total>0).sort((a,b)=>b.total-a.total);
+ $('subjectStats').innerHTML=stats.length?stats.map(x=>`<div class="item"><div class="item-main"><div class="item-title">${safe(x.sub)}</div><div class="progress"><span style="width:${Math.max(2,x.total/Math.max(...stats.map(s=>s.total))*100)}%"></span></div></div><b>${fmt(x.total)}</b></div>`).join(''):empty('学習を記録すると科目別に集計されます。');
+ const arr=[...studies].sort((a,b)=>b.date.localeCompare(a.date));$('studyCount').textContent=`${studies.length}件`;$('studyList').innerHTML=arr.length?arr.map(s=>`<div class="item"><div class="item-main"><div class="item-title">${safe(s.subject)} · ${fmt(s.minutes)}</div><div class="item-meta">${dateLabel(s.date)}${s.memo?' · '+safe(s.memo):''}</div></div><div class="item-actions"><button class="btn secondary small" data-edit-study="${s.id}">編集</button><button class="btn danger small" data-delete-study="${s.id}">削除</button></div></div>`).join(''):empty('学習記録はまだありません。')}
+function renderEvents(){const f=$('eventFilter').value;let arr=[...events];if(f==='upcoming')arr=arr.filter(e=>e.date>=todayKey);if(f==='today')arr=arr.filter(e=>e.date===todayKey);arr.sort((a,b)=>a.date.localeCompare(b.date)||(a.time||'').localeCompare(b.time||''));$('eventCount').textContent=`${arr.length}件`;$('eventList').innerHTML=arr.length?arr.map(e=>`<div class="item"><div class="metric-icon">▦</div><div class="item-main"><div class="item-title">${safe(e.title)}</div><div class="item-meta">${dateLabel(e.date)}${e.time?' · '+safe(e.time):''}${e.memo?' · '+safe(e.memo):''}</div></div><div class="item-actions"><button class="btn secondary small" data-edit-event="${e.id}">編集</button><button class="btn danger small" data-delete-event="${e.id}">削除</button></div></div>`).join(''):empty('表示する予定がありません。')}
+function renderNotes(){const q=$('noteSearch').value.trim().toLowerCase(),arr=[...notes].filter(n=>(n.title+' '+n.body+' '+n.category).toLowerCase().includes(q)).sort((a,b)=>b.updated-a.updated);$('noteCount').textContent=`${notes.length}件`;$('noteList').innerHTML=arr.length?arr.map(n=>`<article class="note"><h3>${safe(n.title)}</h3><div class="tiny" style="margin-bottom:8px">${safe(n.category)}</div><p>${safe(n.body||'本文なし')}</p><div class="note-foot"><span>${new Date(n.updated).toLocaleDateString('ja-JP')}</span><span class="actions"><button class="btn ghost small" data-edit-note="${n.id}">編集</button><button class="btn ghost small" data-delete-note="${n.id}">削除</button></span></div></article>`).join(''):empty('メモはまだありません。')}
+function renderAll(){renderHome();renderTasks();renderStudy();renderEvents();renderNotes()}
+const titles={home:'おかえりなさい。',tasks:'タスク管理',study:'学習記録',planner:'予定を整理',notes:'メモ・ノート'};
+function go(page){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+page));document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));$('pageTitle').textContent=titles[page]||'My Space';window.scrollTo({top:0,behavior:'smooth'})}
+document.addEventListener('click',e=>{const nav=e.target.closest('[data-page]');if(nav){go(nav.dataset.page);return}const quick=e.target.closest('[data-action]');if(quick){const k=quick.dataset.action;go(k==='task'?'tasks':k==='study'?'study':'notes');return}
+ const el=e.target.closest('button');if(!el)return;
+ for(const [attr,type] of [['data-edit-task','task'],['data-edit-study','study'],['data-edit-event','event'],['data-edit-note','note']])if(el.hasAttribute(attr)){edit(type,el.getAttribute(attr));return}
+ for(const [attr,type] of [['data-delete-task','task'],['data-delete-study','study'],['data-delete-event','event'],['data-delete-note','note']])if(el.hasAttribute(attr)){remove(type,el.getAttribute(attr));return}
+});
+document.addEventListener('change',e=>{if(e.target.matches('[data-check-task]')){const t=tasks.find(x=>x.id===e.target.dataset.checkTask);if(t){t.done=e.target.checked;save();renderTasks();toast(t.done?'タスクを完了にしました':'未完了に戻しました')}}});
+$('taskForm').addEventListener('submit',e=>{e.preventDefault();const id=$('taskId').value,old=tasks.find(x=>x.id===id),obj={id:id||uid(),title:$('taskTitle').value.trim(),due:$('taskDue').value,priority:$('taskPriority').value,category:$('taskCategory').value,done:old?.done||false};if(!obj.title)return;if(id)tasks=tasks.map(x=>x.id===id?obj:x);else tasks.push(obj);save();resetForm('task');renderAll();toast('タスクを保存しました')});
+$('studyForm').addEventListener('submit',e=>{e.preventDefault();const id=$('studyId').value,mins=Number($('studyMinutes').value);if(!mins||mins<1||mins>1440){toast('学習時間は1〜1440分で入力してください');return}const obj={id:id||uid(),subject:$('studySubject').value,date:$('studyDate').value,minutes:mins,memo:$('studyMemo').value.trim()};if(id)studies=studies.map(x=>x.id===id?obj:x);else studies.push(obj);save();resetForm('study');renderAll();toast('学習記録を保存しました')});
+$('eventForm').addEventListener('submit',e=>{e.preventDefault();const id=$('eventId').value,obj={id:id||uid(),title:$('eventTitle').value.trim(),date:$('eventDate').value,time:$('eventTime').value,memo:$('eventMemo').value.trim()};if(id)events=events.map(x=>x.id===id?obj:x);else events.push(obj);save();resetForm('event');renderAll();toast('予定を保存しました')});
+$('noteForm').addEventListener('submit',e=>{e.preventDefault();const id=$('noteId').value,old=notes.find(x=>x.id===id),obj={id:id||uid(),title:$('noteTitle').value.trim(),category:$('noteCategory').value,body:$('noteBody').value.trim(),updated:Date.now(),created:old?.created||Date.now()};if(id)notes=notes.map(x=>x.id===id?obj:x);else notes.push(obj);save();resetForm('note');renderAll();toast('メモを保存しました')});
+function resetForm(type){const forms={task:'taskForm',study:'studyForm',event:'eventForm',note:'noteForm'};$(forms[type]).reset();$(type+'Id').value='';$(type+'Cancel').hidden=true;const names={task:'タスクを追加',study:'学習を記録',event:'予定を追加',note:'メモを作成'};$(type+'FormTitle').textContent=names[type];if(type==='study')$('studyDate').value=todayKey;if(type==='event')$('eventDate').value=todayKey}
+function edit(type,id){const lists={task:tasks,study:studies,event:events,note:notes},x=lists[type].find(y=>y.id===id);if(!x)return;go(({task:'tasks',study:'study',event:'planner',note:'notes'})[type]);$(type+'Id').value=x.id;$(type+'Cancel').hidden=false;const map={task:{taskTitle:x.title,taskDue:x.due,taskPriority:x.priority,taskCategory:x.category},study:{studySubject:x.subject,studyDate:x.date,studyMinutes:x.minutes,studyMemo:x.memo},event:{eventTitle:x.title,eventDate:x.date,eventTime:x.time,eventMemo:x.memo},note:{noteTitle:x.title,noteCategory:x.category,noteBody:x.body}};Object.entries(map[type]).forEach(([id,val])=>$(id).value=val||'');$(type+'FormTitle').textContent='内容を編集';document.querySelector('main').scrollTo?.(0,0)}
+function remove(type,id){if(!confirm('この項目を削除しますか？'))return;const key={task:'tasks',study:'studies',event:'events',note:'notes'}[type];if(type==='task')tasks=tasks.filter(x=>x.id!==id);if(type==='study')studies=studies.filter(x=>x.id!==id);if(type==='event')events=events.filter(x=>x.id!==id);if(type==='note')notes=notes.filter(x=>x.id!==id);save();renderAll();toast('削除しました')}
+['task','study','event','note'].forEach(t=>$(t+'Cancel').addEventListener('click',()=>resetForm(t)));
+$('taskSearch').addEventListener('input',renderTasks);$('noteSearch').addEventListener('input',renderNotes);$('eventFilter').addEventListener('change',renderEvents);$('weeklyGoal').addEventListener('change',()=>{goal=Math.max(1,Math.min(100000,Number($('weeklyGoal').value)||600));save();renderAll();toast('目標を更新しました')});
+$('todayLabel').textContent=today.toLocaleDateString('ja-JP',{month:'long',day:'numeric',weekday:'short'});
+$('studyDate').value=todayKey;$('eventDate').value=todayKey;
+renderAll();
+})();
+</script>
+</body>
+</html>
